@@ -15,7 +15,7 @@ def res(x, y):
     >>> res(-1, 5)
     Traceback (most recent call last):
     ...
-    ValueError: math domain error
+    ValueError: expected a positive input, got -1
     """
     if 0 not in (x, y):
         # We use the relation x^y = y*log10(x), where 10 is the base.

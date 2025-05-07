@@ -40,7 +40,7 @@ class FFT:
 
     Print product
     >>> x.product  # 2x + 3x^2 + 8x^3 + 4x^4 + 6x^5
-    [(-0+0j), (2+0j), (3+0j), (8+0j), (6+0j), (8+0j)]
+    [(-0-0j), (2+0j), (3-0j), (8-0j), (6+0j), (8+0j)]
 
     __str__ test
     >>> print(x)
