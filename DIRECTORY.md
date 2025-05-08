@@ -1390,4 +1390,3 @@
   * [Slack Message](web_programming/slack_message.py)
   * [Test Fetch Github Info](web_programming/test_fetch_github_info.py)
   * [World Covid19 Stats](web_programming/world_covid19_stats.py)
-  
