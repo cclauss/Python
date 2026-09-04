@@ -294,6 +294,7 @@
     * [Dijkstras Two Stack Algorithm](data_structures/stacks/dijkstras_two_stack_algorithm.py)
     * [Infix To Postfix Conversion](data_structures/stacks/infix_to_postfix_conversion.py)
     * [Infix To Prefix Conversion](data_structures/stacks/infix_to_prefix_conversion.py)
+    * [Kth Next Greater Element](data_structures/stacks/kth_next_greater_element.py)
     * [Largest Rectangle Histogram](data_structures/stacks/largest_rectangle_histogram.py)
     * [Lexicographical Numbers](data_structures/stacks/lexicographical_numbers.py)
     * [Next Greater Element](data_structures/stacks/next_greater_element.py)
@@ -1388,6 +1389,9 @@
   * [Word Occurrence](strings/word_occurrence.py)
   * [Word Patterns](strings/word_patterns.py)
   * [Z Function](strings/z_function.py)
+
+## Tests
+  * [Test Sorts](tests/test_sorts.py)
 
 ## Web Programming
   * [Co2 Emission](web_programming/co2_emission.py)
