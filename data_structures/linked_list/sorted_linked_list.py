@@ -21,29 +21,6 @@ class Node:
     next: Node | None = None
 
 
-def iter_linked_list(head: Node | None) -> Iterable[Node]:
-    """
-    Iterate over the nodes of a linked list.
-
-    Parameters:
-        head: The head node of the linked list.
-
-    Yields:
-        Each node in the linked list, one by one.
-
-    Example:
-    >>> head = Node(3, Node(1, Node(2)))
-    >>> head  # dataclasses provide a nice .__repr__().
-    Node(data=3, next=Node(data=1, next=Node(data=2, next=None)))
-    >>> tuple(iter_linked_list(head))
-    (3, 1, 2)
-    """
-    current = head
-    while current:
-        yield current.data
-        current = current.next
-
-
 class SortedLinkedList:
     """This class  represents a sorted linked list."""
 
