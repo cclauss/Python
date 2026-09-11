@@ -1,44 +1,46 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(order=True)
 class Node:
-    """THis class represents  a node in the linked list."""
+    """
+    A class representing a node in a linked list.
 
-    def __init__(self, data: int) -> None:
-        """Constructor of Node class
+    Attributes:
+        data: The data stored in the node.
+        next: A reference to the next node in the linked list.
 
-        Args:
-            data (int): Data of node
+    >>> Node(1, Node(2, Node(3)))
+    Node(data=1, next=Node(data=2, next=Node(data=3, next=None)))
+    """
+    data: int
+    next: Node | None = None
 
-        Doctests
 
-        >>> Node(20)
-        Node(20)
-        >>> Node(27)
-        Node(27)
-        >>> Node(None)
-        Node(None)
-        """
-        self.data: int = data
-        self.next_node: Node | None = None
+def iter_linked_list(head: Node | None) -> Iterable[Node]:
+    """
+    Iterate over the nodes of a linked list.
 
-    def __repr__(self) -> str:
-        """
-        Get the string representation of this node.
-        >>> Node(10).__repr__()
-        'Node(10)'
-        >>> repr(Node(10))
-        'Node(10)'
-        >>> str(Node(10))
-        'Node(10)'
-        >>> Node(10)
-        Node(10)
-        """
-        return f"Node({self.data})"
+    Parameters:
+        head: The head node of the linked list.
 
+    Yields:
+        Each node in the linked list, one by one.
+
+    Example:
+    >>> head = Node(3, Node(1, Node(2)))
+    >>> head  # dataclasses provide a nice .__repr__().
+    Node(data=3, next=Node(data=1, next=Node(data=2, next=None)))
+    >>> tuple(iter_linked_list(head))
+    (3, 1, 2)
+    """
+    current = head
+    while current:
+        yield current.data
+        current = current.next
 
 class SortedLinkedList:
     """This class  represents a sorted linked list."""
@@ -50,77 +52,84 @@ class SortedLinkedList:
         >>> linked_list.head is None
         True
         """
-        self.num_nodes: int = 0
         self.head: Node | None = None
         self.tail: Node | None = None
 
-    def __repr__(self) -> str:
+    def __iter__(self) -> Iterator[int]:
+        """Iterate over the data of the nodes in the linked list.
+        
+        >>> linked_list = SortedLinkedList()
+        >>> linked_list.insert(3)
+        >>> linked_list.insert(1)
+        >>> linked_list.insert(2)
+        >>> tuple(linked_list)
+        (1, 2, 3)
         """
-        >>> linkedList=SortedLinkedList()
-        >>> linkedList.insert(2)
-        >>> linkedList.insert(12)
-        >>> linkedList.insert(21)
-        >>> linkedList.insert(23)
-        >>> linkedList.insert(72)
-        >>> linkedList.__repr__()
-        '2, 12, 21, 23, 72'
+        current = self.head
+        while current:
+            yield current.data
+            current = current.next
+
+    def __len__(self) -> int:
+        """Return the number of nodes in the linked list.
+
+        >>> linked_list = SortedLinkedList()
+        >>> len(linked_list)
+        0
+        >>> linked_list.insert(3)
+        >>> len(linked_list)
+        1
+        >>> linked_list.insert(1)
+        >>> linked_list.insert(2)
+        >>> len(linked_list)
+        3
         """
-        nodes = []
-        temp: Node | None = self.head
-        while temp:
-            nodes.append(str(temp.data))
-            temp = temp.next_node
-        return f"{', '.join(nodes)}"
+        return len(tuple(self))
+
+    def __contains__(self, data: int) -> bool:
+        """Check if a node with the given data exists in the linked list.
+
+        >>> linked_list = SortedLinkedList()
+        >>> linked_list.insert(3)
+        >>> 3 in linked_list
+        True
+        >>> 1 in linked_list
+        False
+        """
+        return data in tuple(self)
 
     def insert(self, data: int) -> None:
-        """This Function inserts node in it's sorted position
-        This function can be re written for any data type but
-        the comparator her must have to be changed
+        """Inserts a node in its sorted position
+        This function can be rewritten for any data type, but
+        the comparator here must be changed
 
         Args:
-            data (int): the data of linked list
+            data (int): the data of the linked list
 
         Doctests
         >>> linked_list = SortedLinkedList()
         >>> linked_list.insert(32)
         >>> linked_list.insert(57)
         >>> linked_list.insert(45)
-        >>> linked_list
-        32, 45, 57
+        >>> tuple(linked_list)
+        (32, 45, 57)
         """
         new_node = Node(data)
         if self.head is None:
             self.head = new_node
             self.tail = new_node
-        elif data < self.head.data:
-            new_node.next_node = self.head
+        elif new_node < self.head:
+            new_node.next = self.head
             self.head = new_node
         else:
             temp_node: Node | None = self.head
             if temp_node:
-                while temp_node.next_node and temp_node.next_node.data < data:
-                    temp_node = temp_node.next_node
-                new_node.next_node = temp_node.next_node
-                temp_node.next_node = new_node
-                if new_node.next_node is None:
+                while temp_node.next and temp_node.next.data < data:
+                    temp_node = temp_node.next
+                new_node.next = temp_node.next
+                temp_node.next = new_node
+                if new_node.next is None:
                     self.tail = new_node
-        self.num_nodes += 1
-
-    def display(self) -> None:
-        """
-        This function displays whole list
-
-        Doctests
-
-
-        >>> linkedList=SortedLinkedList()
-        >>> linkedList.insert(32)
-        >>> linkedList.insert(57)
-        >>> linkedList.insert(45)
-        >>> linkedList.display()
-        32, 45, 57
-        """
-        print(repr(self))
 
     def delete(self, data: int) -> bool:
         """This Function deletes first appearance of node with
@@ -141,32 +150,31 @@ class SortedLinkedList:
         >>> linkedList.insert(32)
         >>> linkedList.insert(57)
         >>> linkedList.insert(45)
-        >>> linkedList.display()
-        32, 45, 57
+        >>> tuple(linkedList)
+        (32, 45, 57)
         >>> linkedList.delete(45)
         True
-        >>> linkedList.display()
-        32, 57
+        >>> tuple(linkedList)
+        (32, 57)
         """
         if self.head is None:
             return False
 
         if self.head.data == data:
-            self.head = self.head.next_node
+            self.head = self.head.next
             if self.head is None:
                 self.tail = None
             return True
 
         temp_node: Node | None = self.head
         if temp_node:
-            while temp_node.next_node:
-                if temp_node.next_node.data == data:
-                    temp_node.next_node = temp_node.next_node.next_node
-                    if temp_node.next_node is None:
+            while temp_node.next:
+                if temp_node.next.data == data:
+                    temp_node.next = temp_node.next.next
+                    if temp_node.next is None:
                         self.tail = temp_node
-                    self.num_nodes -= 1
                     return True
-                temp_node = temp_node.next_node
+                temp_node = temp_node.next
 
         return False
 
@@ -185,17 +193,14 @@ class SortedLinkedList:
         >>> linkedList.insert(32)
         >>> linkedList.insert(57)
         >>> linkedList.insert(45)
+        >>> tuple(linkedList)
+        (32, 45, 57)
         >>> linkedList.search(45)
         True
         >>> linkedList.search(90)
         False
         """
-        temp: Node | None = self.head
-        while temp:
-            if temp.data == data:
-                return True
-            temp = temp.next_node
-        return False
+        return data in self
 
     def is_empty(self) -> bool:
         """This function will check whether the list is empty or not
@@ -214,36 +219,7 @@ class SortedLinkedList:
         >>> linkedList.is_empty()
         False
         """
-
-        return self.head is None
-
-    def length(self) -> int:
-        """This function returns the length of the linked list
-
-
-        Returns:
-            int: The length of linked list
-
-        Doctests
-
-        >>> linkedList=SortedLinkedList()
-        >>> linkedList.length()
-        0
-        >>> linkedList.insert(32)
-        >>> linkedList.length()
-        1
-        >>> linkedList.insert(57)
-        >>> linkedList.length()
-        2
-        >>> linkedList.insert(45)
-        >>> linkedList.length()
-        3
-        >>> linkedList.delete(45)
-        True
-        >>> linkedList.length()
-        2
-        """
-        return self.num_nodes
+        return not self
 
     def min_value(self) -> int | None:
         """This function will return minimum value
@@ -254,15 +230,15 @@ class SortedLinkedList:
         Doctests
 
         >>> linkedList=SortedLinkedList()
+        >>> linkedList.min_value() is None
+        True
         >>> linkedList.insert(32)
         >>> linkedList.insert(57)
         >>> linkedList.insert(45)
         >>> linkedList.min_value()
         32
         """
-        if self.head is None:
-            return None
-        return self.head.data
+        return min(self) if self.head else None
 
     def max_value(self) -> int | None:
         """This function  will return maximum value
@@ -274,15 +250,15 @@ class SortedLinkedList:
         Doctests
 
         >>> linkedList=SortedLinkedList()
+        >>> linkedList.max_value() is None
+        True
         >>> linkedList.insert(32)
         >>> linkedList.insert(57)
         >>> linkedList.insert(45)
         >>> linkedList.max_value()
         57
         """
-        if self.tail is None:
-            return None
-        return self.tail.data
+        return max(self) if self.head else None
 
     def remove_duplicates(self) -> None:
         """
@@ -295,19 +271,19 @@ class SortedLinkedList:
         >>> linkedList.insert(57)
         >>> linkedList.insert(45)
         >>> linkedList.insert(45)
-        >>> linkedList.display()
-        32, 45, 45, 57
+        >>> tuple(linkedList)
+        (32, 45, 45, 57)
         >>> linkedList.remove_duplicates()
-        >>> linkedList.display()
-        32, 45, 57
+        >>> tuple(linkedList)
+        (32, 45, 57)
         """
 
         temp: Node | None = self.head
-        while temp and temp.next_node:
-            if temp.data == temp.next_node.data:
-                temp.next_node = temp.next_node.next_node
+        while temp and temp.next:
+            if temp.data == temp.next.data:
+                temp.next = temp.next.next
             else:
-                temp = temp.next_node
+                temp = temp.next
 
     def merge(self, other_list: SortedLinkedList) -> None:
         """This Function will merge the input list with current list
@@ -321,13 +297,17 @@ class SortedLinkedList:
         >>> linkedList.insert(32)
         >>> linkedList.insert(57)
         >>> linkedList.insert(45)
+        >>> tuple(linkedList)
+        (32, 45, 57)
         >>> linkedList2=SortedLinkedList()
         >>> linkedList2.insert(23)
         >>> linkedList2.insert(47)
         >>> linkedList2.insert(95)
+        >>> tuple(linkedList2)
+        (23, 47, 95)
         >>> linkedList.merge(linkedList2)
-        >>> linkedList.display()
-        23, 32, 45, 47, 57, 95
+        >>> tuple(linkedList)
+        (23, 32, 45, 47, 57, 95)
         """
         if other_list.head is None:
             return
@@ -340,7 +320,7 @@ class SortedLinkedList:
 
             while temp:
                 self.insert(temp.data)
-                temp = temp.next_node
+                temp = temp.next
 
 
 if __name__ == "__main__":
