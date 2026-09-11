@@ -16,6 +16,7 @@ class Node:
     >>> Node(1, Node(2, Node(3)))
     Node(data=1, next=Node(data=2, next=Node(data=3, next=None)))
     """
+
     data: int
     next: Node | None = None
 
@@ -42,6 +43,7 @@ def iter_linked_list(head: Node | None) -> Iterable[Node]:
         yield current.data
         current = current.next
 
+
 class SortedLinkedList:
     """This class  represents a sorted linked list."""
 
@@ -57,7 +59,7 @@ class SortedLinkedList:
 
     def __iter__(self) -> Iterator[int]:
         """Iterate over the data of the nodes in the linked list.
-        
+
         >>> linked_list = SortedLinkedList()
         >>> linked_list.insert(3)
         >>> linked_list.insert(1)
