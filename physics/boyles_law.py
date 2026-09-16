@@ -1,5 +1,5 @@
 """
-Title : Implementation of Boyle's law.
+Title: Implementation of Boyle's law.
 
 Description :
     Boyle's law, also referred to as the Boyle-Mariotte law, or Mariotte's law
@@ -12,13 +12,13 @@ Description :
 
     P ∝ (1/V)
 
-    Where P is the pressure exerted by the gas and V is the volume occupied by it. This
-    proportionality can be converted into an equation by adding a constant, k.
+    Where P is the pressure exerted by the gas, and V is the volume occupied by it.
+    This proportionality can be converted into an equation by adding a constant, k.
 
     P = k*(1/V) ⇒ PV = k
 
     Boyle's law states that when the temperature of a given mass of confined gas is
-    constant,the product of its pressure and volume is also constant. When comparing the
+    constant, the product of its pressure and volume is also constant. When comparing the
     same substance under two different sets of conditions, the law can be expressed as:
 
     P1V1 = P2V2
@@ -26,13 +26,15 @@ Description :
     Where,
 
     P1 is the initial pressure exerted by the gas in Pascals (P)
-    V1 is the initial volume occupied by the gas Litres (L)
-    P2 is the final pressure exerted by the gas Pascals (P)
-    V2 is the final volume occupied by the gas Litres (L)
+    V1 is the initial volume occupied by the gas in litres (L)
+    P2 is the final pressure exerted by the gas in Pascals (P)
+    V2 is the final volume occupied by the gas in litres (L)
 
     This equation can be used to predict the increase in the pressure exerted by a gas
     on the walls of its container when the volume of its container is decreased
     (and its quantity and absolute temperature remain unchanged).
+
+    Related to: physics/ideal_gas_law.py
 
 Sources :
     https://en.wikipedia.org/wiki/Boyle%27s_law
@@ -45,8 +47,7 @@ valid_variables: list[str] = ["v1", "v2", "p1", "p2"]
 def check_validity(values: dict[str, float]) -> None:
     """
 
-    Function takes dictionary as an input and returns nothing if the input
-    is valid
+    Takes a dictionary as input and returns nothing if the input is valid
 
     >>> check_validity({})
     Traceback (most recent call last):
@@ -81,9 +82,8 @@ def check_validity(values: dict[str, float]) -> None:
 def find_target_variable(values: dict[str, float]) -> str:
     """
 
-    Function is used to get the valid target variable whose value needs to be found
-    using Boyle's Law.
-    Function takes a dictionary as an input and returns a string
+    Get the valid target variable whose value needs to be found using Boyle's Law.
+    Takes a dictionary as input and returns a string
 
     >>> find_target_variable({})
     Traceback (most recent call last):
@@ -114,10 +114,10 @@ def find_target_variable(values: dict[str, float]) -> str:
 def boyles_law(values: dict[str, float]) -> dict[str, str]:
     """
 
-    Function calculates the the unknown pressure or volume using Boyle's law.
-    Function takes a dictionary as an input. It contains values for respective
+    Calculates the unknown pressure or volume using Boyle's law.
+    Takes a dictionary as input that contains values for the respective
     pressure and volumes and computes the required value and returns it as
-    output
+    output.
 
     >>> boyles_law({'p1':2,'v2':1})
     Traceback (most recent call last):
