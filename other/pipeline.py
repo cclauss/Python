@@ -7,8 +7,10 @@ T = TypeVar("T")
 class Pipeline:
     """
     Functional Programming implementation of a Pipeline with Unix Pipe Syntax.
-    Instead of using the "dot" notation for applying a function on a given object,
-    it uses `|` inspired from unix pipeline.
+    Instead of using the "dot" notation for applying a function to a given object,
+    it uses `|` inspired by the Unix Pipeline.
+
+    https://en.wikipedia.org/wiki/Pipeline_(Unix)#Pipelines_in_command_line_interfaces
 
     Examples:
         >>> pipeline = Pipeline()
